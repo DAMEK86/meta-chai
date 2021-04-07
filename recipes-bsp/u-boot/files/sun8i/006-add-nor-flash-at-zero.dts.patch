@@ -1,0 +1,49 @@
+diff --git a/arch/arm/dts/sun8i-v3s-licheepi-zero.dts b/arch/arm/dts/sun8i-v3s-licheepi-zero.dts
+index 2e4587d26c..277551ad5c 100644
+--- a/arch/arm/dts/sun8i-v3s-licheepi-zero.dts
++++ b/arch/arm/dts/sun8i-v3s-licheepi-zero.dts
+@@ -50,6 +50,7 @@
+ 
+ 	aliases {
+ 		serial0 = &uart0;
++		spi0 = &spi0;
+ 	};
+ 
+ 	chosen {
+@@ -99,3 +100,36 @@
+ 	usb0_id_det-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
+ };
++
++&spi0 {
++	status = "okay";
++
++	flash0: gd25q64@0 { /* 8192K */
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "jedec,spi-nor";
++		reg = <0>;
++		spi-max-frequency = <133000000>;
++
++		partition@0 { /* u-boot */
++			label = "u-boot";
++			reg = <0x000000 0x0c8000>; /* 800k */
++			//read-only;
++		};
++
++		partition@d0000 { /* u-boot environment */
++			label = "u-boot-env";
++			reg = <0x0d0000 0x010000>; /* 64k */
++			//read-only;
++		};
++
++		partition@100000 { /* boot.scr, dtb, zImage */
++			label = "boot";
++			reg = <0x100000 0x4f0000>; /* 4,9Mi */
++		};
++		partition@600000 { /* data */
++			label = "data";
++			reg = <0x600000 0x1f0000>; /* 1,9Mi*/
++		};
++	};
++};
