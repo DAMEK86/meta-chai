@@ -5,6 +5,7 @@ SRC_URI_append_sun8i = " \
     file://001-add-ethernet-to-v3s.dtsi.patch \
     file://002-add-ethernet-alias-at-zero.dts.patch \
     file://ethernet.cfg \
+    file://reduce-size.cfg \
 "
 
 SRC_URI_append_licheepizero-dock = " \

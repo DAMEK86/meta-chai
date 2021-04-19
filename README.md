@@ -21,3 +21,13 @@ For easy verification, use the _chai-audio-image_ with the alsa-tools. Just plug
 
 The Zero and Zero-Dock uses an __EA3036__ PMIC with routed __enable__ pins to 5V. As a result, the power consumption will not drop to _zero_ on a `shutdown`. A possible workaround could be using a pin to drive a _self-holding circuit_.  
 `reboot` instead works as expected.
+
+## boot from flash
+
+```bash
+sudo ./sunxi-tools/sunxi-fel spiflash-write 0x0e0000 sun8i-v3s-licheepi-zero-dock-licheepizero-dock.dtb
+sudo ./sunxi-tools/sunxi-fel spiflash-write 0x100000 zImage-licheepizero-dock.bin
+sudo ./sunxi-tools/sunxi-fel uboot u-boot-sunxi-with-spl.bin
+# or write spl to 0x0
+# sudo ./sunxi-tools/sunxi-fel spiflash-write 0x0 u-boot-sunxi-with-spl.bin
+```

@@ -10,7 +10,7 @@ index 2e4587d26c..277551ad5c 100644
  	};
  
  	chosen {
-@@ -99,3 +100,36 @@
+@@ -99,3 +100,44 @@
  	usb0_id_det-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>;
  	status = "okay";
  };
@@ -24,26 +24,47 @@ index 2e4587d26c..277551ad5c 100644
 +		compatible = "jedec,spi-nor";
 +		reg = <0>;
 +		spi-max-frequency = <133000000>;
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
 +
-+		partition@0 { /* u-boot */
-+			label = "u-boot";
-+			reg = <0x000000 0x0c8000>; /* 800k */
-+			//read-only;
-+		};
-+
-+		partition@d0000 { /* u-boot environment */
-+			label = "u-boot-env";
-+			reg = <0x0d0000 0x010000>; /* 64k */
-+			//read-only;
-+		};
-+
-+		partition@100000 { /* boot.scr, dtb, zImage */
-+			label = "boot";
-+			reg = <0x100000 0x4f0000>; /* 4,9Mi */
-+		};
-+		partition@600000 { /* data */
-+			label = "data";
-+			reg = <0x600000 0x1f0000>; /* 1,9Mi*/
++			partition@0 { /* u-boot */
++				label = "uboot";
++				reg = <0x000000 0x0c8000>; /* 800k */
++				//read-only;
++			};
++			partition@d0000 { /* u-boot environment */
++				label = "env";
++				reg = <0x0d0000 0x008000>; /* 32k */
++				//read-only;
++			};
++			partition@e0000 { /* dtb */
++				label = "dtb";
++				reg = <0x0e0000 0x010000>; /* 64k */
++				//read-only;
++			};
++			partition@100000 { /* zImage */
++				label = "kernel";
++				reg = <0x100000 0x4e2000>; /* 5000k */
++			};
++			partition@5f0000 { /* rootFs */
++				label = "rootfs";
++				reg = <0x5f0000 0x200000>; /* 1,9Mi*/
++			};
 +		};
 +	};
 +};
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index 0135575ca1..b222596738 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -1052,7 +1052,7 @@ config SPL_STACK_R_ADDR
+ 
+ config SPL_SPI_SUNXI
+ 	bool "Support for SPI Flash on Allwinner SoCs in SPL"
+-	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_R40 || MACH_SUN50I_H6
++	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_R40 || MACH_SUN50I_H6 || MACH_SUN8I_V3S
+ 	help
+ 	  Enable support for SPI Flash. This option allows SPL to read from
+ 	  sunxi SPI Flash. It uses the same method as the boot ROM, so does
