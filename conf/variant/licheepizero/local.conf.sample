@@ -1,6 +1,7 @@
 MACHINE = "licheepizero"
 
 MACHINE_FEATURES_remove = " apm"
+MACHINE_FEATURES_append = " touchscreen"
 
 #DL_DIR ?= "${HOME}/yocto/downloads"
 #SSTATE_DIR ?= "${HOME}/yocto/sstate"
