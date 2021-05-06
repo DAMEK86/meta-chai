@@ -17,6 +17,15 @@ First of all, the v3s audio coded has no MIC1 bias. Instead, it looks to me like
 
 For easy verification, use the _chai-image-audio_ with the alsa-tools. Just plugin your headphone, setup ALSA like the picture above and run `alsaloop` and verify the microphone 😎️
 
+## enable/disable kernel features
+
+depending on the enabled machine features, kernel features are added.  
+- alsa - sound and codec are baked in
+- screen - FB are backed in
+- touchscreen - PWM and Touchscreen for NS2009 (onboard) is backed in
+
+you can add machine features by edit `conf/local.conf`  
+just use `MACHINE_FEATURES_append` or `MACHINE_FEATURES_remove`
 ## shutdown / reboot
 
 The Zero and Zero-Dock uses an __EA3036__ PMIC with routed __enable__ pins to 5V. As a result, the power consumption will not drop to _zero_ on a `shutdown`. A possible workaround could be using a pin to drive a _self-holding circuit_.  
