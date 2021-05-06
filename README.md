@@ -1,3 +1,13 @@
+# meta-chai
+
+yocto layer for lichee-pi zero (Allwinner V3s) based on mainline u-boot 2021.xx and kernel 5.x
+
+for easy start
+```bash
+repo init -u git@github.com:DAMEK86/lichee-manifests.git
+repo sync
+```
+
 ## How to use
 
 For instance if you like to build variant `licheepizero-dock`, you can start with the following bash script:
