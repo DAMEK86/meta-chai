@@ -65,7 +65,7 @@ docker run --rm -it -p 69:69/udp \
 
 this image is based on a tiny golang implementation and works very well for my purposes, see https://github.com/darkautism/k8s-tftp
 
-### nfs (ongoing)
+### network boot / nfsroot
 
 to enable network boot, you need to enable kernel features by adding `KERNEL_ENABLE_NFS = "1"` to your ____local.conf__.  
 after this, your kernel shall be able to mount a nfs as rootfs
@@ -73,7 +73,7 @@ after this, your kernel shall be able to mount a nfs as rootfs
 use the kernel cmdline to tell the kernel we want to use a network rootfs. I used the following script in u-boot cmd for my testing:
 
 ```bash
-setenv bootargs "console=ttyS0,115200 root=/dev/nfs ip=192.168.5.78:192.168.5.80:192.168.5.80:255.255.255.0:licheepizero-dock:eth0 nfsroot=192.168.5.80:/export rootwait panic=2 debug"
+setenv bootargs "console=ttyS0,115200 root=/dev/nfs ip=192.168.5.78:192.168.5.80:192.168.5.80:255.255.255.0:licheepizero-dock:eth0 nfsroot=192.168.5.80:/export,tcp,v3 rootwait panic=2 debug"
 setenv origbootcmd "$bootcmd"
 setenv ipaddr 192.168.5.78
 setenv bootcmd "tftp 0x42000000 192.168.5.80:zImage; tftp 0x43000000 192.168.5.80:sun8i-v3s-licheepi-zero-dock.dtb; bootz 0x42000000 - 0x43000000"
@@ -82,71 +82,10 @@ run bootcmd
 
 for a detailed description of nfsroot parameters see https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt
 
-as a starting point, you can use the following docker image or *nfs-kernel-server*
-
-```bash
-docker run --rm -it \
-  -v ${PWD}/export:/export \
-  -v ${PWD}/exports.txt:/etc/exports:ro \
-  --privileged \
-  -p 2049:2049 \
-  erichough/nfs-server
-```
-
-the image is based on alpine and nfs-utils, see https://github.com/ehough/docker-nfs-server
+as a starting point, you can use *nfs-kernel-server*
 
 as a reference have a look into https://community.arm.com/developer/tools-software/oss-platforms/w/docs/542/nfs-remote-network-userspace-using-u-boot or  
 http://linux-sunxi.org/How_to_boot_the_A10_or_A20_over_the_network#TFTP_booting
-
-both, docker image and native installation had the same result - `VFS: Unable to mount root fs via NFS.` - MRs are welcome :)
-
-```bash
-[    1.259677] dwmac-sun8i 1c30000.ethernet eth0: PHY [0.1:01] driver [Generic PHY] (irq=POLL)
-[    1.269426] dwmac-sun8i 1c30000.ethernet eth0: No Safety Features support found
-[    1.276821] dwmac-sun8i 1c30000.ethernet eth0: No MAC Management Counters available
-[    1.284520] dwmac-sun8i 1c30000.ethernet eth0: PTP not supported by HW
-[    1.291567] dwmac-sun8i 1c30000.ethernet eth0: configuring for phy/mii link mode
-[    3.364972] dwmac-sun8i 1c30000.ethernet eth0: Link is Up - 100Mbps/Half - flow control off
-[    3.424470] IP-Config: Complete:
-[    3.427730]      device=eth0, hwaddr=d2:67:bd:63:57:03, ipaddr=192.168.5.78, mask=255.255.255.0, gw=192.168.5.80
-[    3.437919]      host=licheepizero-dock, domain=, nis-domain=(none)
-[    3.444182]      bootserver=192.168.5.80, rootserver=192.168.5.80, rootpath=
-[    4.596375] random: fast init done
-[   33.764479] vcc3v3: disabling
-[   33.767481] vcc5v0: disabling
-[   99.686785] VFS: Unable to mount root fs via NFS.
-[   99.691635] devtmpfs: mounted
-[   99.696554] Freeing unused kernel memory: 1024K
-[   99.714820] Run /sbin/init as init process
-[   99.718933]   with arguments:
-[   99.721898]     /sbin/init
-[   99.724664]     nfsrootdebug
-[   99.727545]   with environment:
-[   99.730683]     HOME=/
-[   99.733041]     TERM=linux
-[   99.736102] Run /etc/init as init process
-[   99.740129]   with arguments:
-[   99.743095]     /etc/init
-[   99.745809]     nfsrootdebug
-[   99.748692]   with environment:
-[   99.751829]     HOME=/
-[   99.754186]     TERM=linux
-[   99.757168] Run /bin/init as init process
-[   99.761187]   with arguments:
-[   99.764151]     /bin/init
-[   99.766855]     nfsrootdebug
-[   99.769736]   with environment:
-[   99.772875]     HOME=/
-[   99.775259]     TERM=linux
-[   99.778499] Run /bin/sh as init process
-[   99.782352]   with arguments:
-[   99.785403]     /bin/sh
-[   99.787853]     nfsrootdebug
-[   99.790746]   with environment:
-[   99.793885]     HOME=/
-[   99.796275]     TERM=linux
-[   99.799327] Kernel panic - not syncing: No working init found.  Try passing init= option to kernel. See Linux Documentation/admin-guide/init.rst for guidance.
-```
 
 ## sunxi-tools / flash boot
 
