@@ -36,6 +36,22 @@ depending on the enabled machine features, kernel features are added.
 
 you can add machine features by edit `conf/local.conf`  
 just use `MACHINE_FEATURES_append` or `MACHINE_FEATURES_remove`
+
+## UI images
+
+there are 2 images
+
+```bash
+chai-image-ui
+qt5-image
+```
+
+The chai-image-ui starts htop as a example.  
+The qt5 image instead contains an calculator example. For best user-experience, enable touchscreen support.  
+To start the calculator, execute `/opt/qt-simple-calc/simpleCalculator`.
+
+The backed in splash screen appears on first reboot or second start.
+
 ## shutdown / reboot
 
 The Zero and Zero-Dock uses an __EA3036__ PMIC with routed __enable__ pins to 5V. As a result, the power consumption will not drop to _zero_ on a `shutdown`. A possible workaround could be using a pin to drive a _self-holding circuit_.  
