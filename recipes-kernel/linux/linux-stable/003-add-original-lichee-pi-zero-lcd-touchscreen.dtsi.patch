@@ -67,12 +67,12 @@ index 084a596..5c92a13 100644
  obj-$(CONFIG_TOUCHSCREEN_USB_COMPOSITE)	+= usbtouchscreen.o
  obj-$(CONFIG_TOUCHSCREEN_PCAP)		+= pcap_ts.o
  obj-$(CONFIG_TOUCHSCREEN_PENMOUNT)	+= penmount.o
-diff --git b/drivers/input/touchscreen/ns2009.c b/drivers/input/touchscreen/ns2009.c
+diff --git a/drivers/input/touchscreen/ns2009.c b/drivers/input/touchscreen/ns2009.c
 new file mode 100644
-index 0000000..f527212
+index 000000000000..1c94b0a643b6
 --- /dev/null
 +++ b/drivers/input/touchscreen/ns2009.c
-@@ -0,0 +1,212 @@
+@@ -0,0 +1,216 @@
 +/*
 + * Nsiway NS2009 touchscreen controller driver
 + *
@@ -95,7 +95,6 @@ index 0000000..f527212
 +#include <linux/kernel.h>
 +#include <linux/module.h>
 +#include <linux/input.h>
-+#include <linux/input-polldev.h>
 +#include <linux/input/touchscreen.h>
 +#include <linux/i2c.h>
 +
@@ -189,14 +188,14 @@ index 0000000..f527212
 +	return 0;
 +}
 +
-+static void ns2009_ts_poll(struct input_polled_dev *dev)
++static void ns2009_ts_poll(struct input_dev *input)
 +{
-+	struct ns2009_data *data = dev->private;
++	struct ns2009_data *data = input_get_drvdata(input);
 +	int ret;
 +
 +	ret = ns2009_ts_report(data);
 +	if (ret)
-+		dev_err(&dev->input->dev, "Poll touch data failed: %d\n", ret);
++		dev_err(&input->dev, "Poll touch data failed: %d\n", ret);
 +}
 +
 +static void ns2009_ts_config_input_dev(struct ns2009_data *data)
@@ -216,26 +215,31 @@ index 0000000..f527212
 +static int ns2009_ts_request_polled_input_dev(struct ns2009_data *data)
 +{
 +	struct device *dev = &data->client->dev;
-+	struct input_polled_dev *polled_dev;
++	struct input_dev *input;
 +	int error;
 +
-+	polled_dev = devm_input_allocate_polled_device(dev);
-+	if (!polled_dev) {
++	input = devm_input_allocate_device(dev);
++	if (!input) {
 +		dev_err(dev,
-+			"Failed to allocate polled input device\n");
++			"Failed to allocate input device\n");
 +		return -ENOMEM;
 +	}
-+	data->input = polled_dev->input;
++	data->input = input;
++	input_set_drvdata(input, data);
 +
 +	ns2009_ts_config_input_dev(data);
-+	polled_dev->private = data;
-+	polled_dev->poll = ns2009_ts_poll;
-+	polled_dev->poll_interval = POLL_INTERVAL;
 +
-+	error = input_register_polled_device(polled_dev);
++	error = input_setup_polling(input, ns2009_ts_poll);
 +	if (error) {
-+		dev_err(dev, "Failed to register polled input device: %d\n",
-+			error);
++		dev_err(dev, "could not set up polling mode, %d\n", error);
++		return error;
++	}
++
++	input_set_poll_interval(input, POLL_INTERVAL);
++
++	error = input_register_device(input);
++	if (error) {
++		dev_err(dev, "could not register input device, %d\n", error);
 +		return error;
 +	}
 +

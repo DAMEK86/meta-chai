@@ -170,12 +170,7 @@ do_configure_prepend() {
     touchscreen="${@bb.utils.contains("MACHINE_FEATURES", "touchscreen", "1", "0", d)}"
     if [ "${touchscreen}" = "1" ]; then
         kernel_conf_variable INPUT_TOUCHSCREEN y
-        if [ "${LINUX_VERSION}" = "5.12" ] || [ "${LINUX_VERSION}" = "5.13" ]; then
-            bbwarn "skip TOUCHSCREEN_NS2009 because of ${LINUX_VERSION} incompatibility\nif you need you TOUCHSCREEN_NS2009 use 5.10 and below by editing `PREFERRED_VERSION_linux-stable` in local.conf"
-            kernel_conf_variable TOUCHSCREEN_NS2009 n
-        else
-            kernel_conf_variable TOUCHSCREEN_NS2009 y
-        fi
+        kernel_conf_variable TOUCHSCREEN_NS2009 y
         bbplain "touchscreen cfg added"
     else
         kernel_conf_variable BACKLIGHT_CLASS_DEVICE n
