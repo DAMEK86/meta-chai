@@ -128,11 +128,13 @@ do_configure_prepend() {
     # kernel_conf_variable DEBUG_FS y
     # kernel_conf_variable MEDIA_SUPPORT y
     # kernel_conf_variable FTRACE y
-    # kernel_conf_variable PRINTK_TIME y
     # kernel_conf_variable MODULES y
     # kernel_conf_variable MODULE_UNLOAD y
     # kernel_conf_variable HIGHMEM y
     kernel_conf_variable PRINTK_TIME y
+
+    kernel_conf_variable I2C y
+    kernel_conf_variable I2C_MV64XXX y
     kernel_conf_variable I2C_CHARDEV y
 
     # Activate the configuration options for screen
