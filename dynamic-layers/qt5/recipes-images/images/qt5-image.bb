@@ -23,6 +23,10 @@ SYSTEM_TOOLS_INSTALL = " \
     minicom \
 "
 
+AUDIO_TOOLS = " \
+    alsa-utils \
+"
+
 QT_TOOLS = " \
     liberation-fonts \
     qtbase \
@@ -83,6 +87,7 @@ IMAGE_INSTALL += " \
   ${QT_TOOLS} \
   ${KERNEL_EXTRA_INSTALL} \
   ${TSLIB} \
+  ${AUDIO_TOOLS} \
   qt-simple-calc \
 "
 
