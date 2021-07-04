@@ -5,3 +5,6 @@ MACHINE_FEATURES_append = " touchscreen"
 
 #DL_DIR ?= "${HOME}/yocto/downloads"
 #SSTATE_DIR ?= "${HOME}/yocto/sstate"
+
+# default version is 5.13, uncomment to change
+#PREFERRED_VERSION_linux-stable = "5.10.%"
