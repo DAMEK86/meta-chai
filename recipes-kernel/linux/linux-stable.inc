@@ -99,7 +99,7 @@ do_configure_prepend() {
     mv -f ${B}/.config ${B}/.config.patched
     CONF_SED_SCRIPT=""
 
-    bbnote "${MACHINE_FEATURES}"
+    bbplain "machine features: ${MACHINE_FEATURES}"
 
     kernel_conf_variable CMDLINE "\"${CMDLINE} ${CMDLINE_DEBUG}\""
 
@@ -107,8 +107,8 @@ do_configure_prepend() {
     kernel_conf_variable LOCALVERSION_AUTO n
 
     # /proc/config.gz
-    # kernel_conf_variable IKCONFIG y
-    # kernel_conf_variable IKCONFIG_PROC y
+    kernel_conf_variable IKCONFIG y
+    kernel_conf_variable IKCONFIG_PROC y
 
     kernel_conf_variable SYSFS_DEPRECATED n
     kernel_conf_variable SYSFS_DEPRECATED_V2 n
@@ -145,7 +145,9 @@ do_configure_prepend() {
         kernel_conf_variable FB_SIMPLE y
         kernel_conf_variable FB_SSD1307 y
         kernel_conf_variable DRM_PANEL_SIMPLE y
-        bbnote "screen cfg added"
+        kernel_conf_variable BACKLIGHT_PWM y
+        kernel_conf_variable PWM_SUN4I y
+        bbplain "screen cfg added"
     else
         kernel_conf_variable DRM n
         kernel_conf_variable FB n
@@ -159,7 +161,7 @@ do_configure_prepend() {
         kernel_conf_variable SND_SOC y
         kernel_conf_variable SND_SUN4I_CODEC y
         kernel_conf_variable SND_SUN8I_CODEC_ANALOG y
-        bbnote "alsa cfg added"
+        bbplain "alsa cfg added"
     else
         kernel_conf_variable SOUND n
     fi
@@ -168,10 +170,13 @@ do_configure_prepend() {
     touchscreen="${@bb.utils.contains("MACHINE_FEATURES", "touchscreen", "1", "0", d)}"
     if [ "${touchscreen}" = "1" ]; then
         kernel_conf_variable INPUT_TOUCHSCREEN y
-        kernel_conf_variable TOUCHSCREEN_NS2009 y
-        kernel_conf_variable BACKLIGHT_PWM y
-        kernel_conf_variable PWM_SUN4I y
-        bbnote "touchscreen cfg added"
+        if [ "${LINUX_VERSION}" = "5.12" ] || [ "${LINUX_VERSION}" = "5.13" ]; then
+            bbwarn "skip TOUCHSCREEN_NS2009 because of ${LINUX_VERSION} incompatibility\nif you need you TOUCHSCREEN_NS2009 use 5.10 and below by editing `PREFERRED_VERSION_linux-stable` in local.conf"
+            kernel_conf_variable TOUCHSCREEN_NS2009 n
+        else
+            kernel_conf_variable TOUCHSCREEN_NS2009 y
+        fi
+        bbplain "touchscreen cfg added"
     else
         kernel_conf_variable BACKLIGHT_CLASS_DEVICE n
         #kernel_conf_variable BACKLIGHT_PWM n
