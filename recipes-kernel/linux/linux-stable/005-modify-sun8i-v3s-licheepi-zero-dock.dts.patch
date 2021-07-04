@@ -1,8 +1,8 @@
 diff --git a/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts b/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts
-index db5cd0b8574b..4d564028f286 100644
+index db5cd0b8574b..448c895ff9ea 100644
 --- a/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts
 +++ b/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts
-@@ -49,6 +49,10 @@ / {
+@@ -49,19 +49,16 @@ / {
  	compatible = "licheepi,licheepi-zero-dock", "licheepi,licheepi-zero",
  		     "allwinner,sun8i-v3s";
  
@@ -13,10 +13,30 @@ index db5cd0b8574b..4d564028f286 100644
  	leds {
  		/* The LEDs use PG0~2 pins, which conflict with MMC1 */
  		status = "disabled";
-@@ -94,3 +108,8 @@ button-800 {
+ 	};
+ };
+ 
+-&mmc1 {
+-	broken-cd;
+-	bus-width = <4>;
+-	vmmc-supply = <&reg_vcc3v3>;
+-	status = "okay";
+-};
+-
+ &lradc {
+ 	vref-supply = <&reg_vcc3v0>;
+ 	status = "okay";
+@@ -94,3 +91,24 @@ button-800 {
  		voltage = <800000>;
  	};
  };
++
++&mmc1 {
++	broken-cd;
++	bus-width = <4>;
++	vmmc-supply = <&reg_vcc3v3>;
++	status = "okay";
++};
 +
 +&emac {
 +	allwinner,leds-active-low;
