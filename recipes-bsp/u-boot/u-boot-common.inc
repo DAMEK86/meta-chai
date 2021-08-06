@@ -8,10 +8,11 @@ DEPENDS += "flex-native bison-native"
 
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=5a7450c57ffe5ae63fd732446b988025"
-PE = "1"
 
 SRC_URI = "git://git.denx.de/u-boot.git \
           "
+
+PV = "${UBOOT_VERSION}"
 
 S = "${WORKDIR}/git"
 B = "${WORKDIR}/build"
