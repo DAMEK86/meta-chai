@@ -5,7 +5,6 @@ LICENSE = "MIT"
 TOOLCHAIN_HOST_TASK_append = " nativesdk-cmake"
 
 DESCRIPTION = "A console image for Lichee Pi Zero, Zero-Dock Boards"
-LICENSE = "MIT"
 
 NETWORK_APP = " \
     openssh openssh-keygen \
