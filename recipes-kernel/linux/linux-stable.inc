@@ -43,6 +43,7 @@ SRC_URI_append_sun8i = " \
     file://004-modify-sun8i-v3s-licheepi-zero.dts.patch \
     file://005-modify-sun8i-v3s-licheepi-zero-dock.dts.patch \
     file://006-add-audio-codec-to-sun8i-v3s.dtsi.patch \
+    file://007-enable-uart2-sun8i-v3s-licheepi-zero-dock.dts.patch \
 "
 
 # Set a variable in .configure
