@@ -17,3 +17,5 @@ PV = "${UBOOT_VERSION}"
 S = "${WORKDIR}/git"
 B = "${WORKDIR}/build"
 do_configure[cleandirs] = "${B}"
+
+do_deploy[depends] += "u-boot-script:do_deploy"
