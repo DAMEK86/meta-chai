@@ -11,3 +11,6 @@ MACHINE_FEATURES_append = " touchscreen"
 
 # default version is 2021.07, uncomment to change
 #PREFERRED_VERSION_u-boot = "2021.04"
+
+# default version is 3.5 since 4.1.8 has problems with raw data sockets
+PREFERRED_VERSION_ser2net = "3.5"
