@@ -1,0 +1,29 @@
+From 3742fa82aed62493d4438623f3d08c5c33b9bf81 Mon Sep 17 00:00:00 2001
+From: Andreas Rehn <andreas.rehn@daimler.com>
+Date: Sun, 26 Sep 2021 21:11:35 +0200
+Subject: [PATCH] arm: dts: sunxi: v3s: enable audio codec
+
+---
+ arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts b/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts
+index 752ad05c8f83..780a96e4a197 100644
+--- a/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts
++++ b/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts
+@@ -59,6 +59,15 @@ leds {
+ 	};
+ };
+
++&codec {
++	allwinner,audio-routing =
++		"Headphone", "HP",
++		"Headphone", "HPCOM",
++		"MIC1", "Mic",
++		"Headset Mic", "HBIAS";
++	status = "okay";
++};
++
+ &emac {
+ 	allwinner,leds-active-low;
+ 	status = "okay";

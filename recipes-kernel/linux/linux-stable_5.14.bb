@@ -8,20 +8,19 @@ COMPATIBLE_MACHINE = "(licheepizero|licheepizero-dock)"
 
 PR_append = ".chai"
 
-LINUX_VERSION = "5.10"
+LINUX_VERSION = "5.14"
 LINUX_VERSION_EXTENSION = "-chai"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/linux-stable-${LINUX_VERSION}:"
 
 S = "${WORKDIR}/git"
 
-PV = "5.10.67"
-SRCREV = "faf816b0f8d0fa8ea24f579fb6a51e5ed3efd750"
+PV = "5.14.7"
+SRCREV = "56c0ace445bd3aad9b2bee1e9d54cffe37f22205"
 SRC_URI_append = " \
-    file://001-modify-sun8i-v3s.dtsi.patch \
+    file://0001-arm-dts-sunxi-v3s-enable-audio-codec.patch \
+    file://0002-arm-dts-sunxi-v3s-add-touchscreen-ns2009.patch \
+    file://0003-arm-dts-sunxi-v3s-add-lcd_rgb666-and-pwm-pins.patch \
     file://002-add-original-lichee-pi-zero-lcd-display.dtsi.patch \
-    file://003-add-original-lichee-pi-zero-lcd-touchscreen.dtsi.patch \
-    file://004-modify-sun8i-v3s-licheepi-zero.dts.patch \
-    file://005-modify-sun8i-v3s-licheepi-zero-dock.dts.patch \
-    file://006-add-audio-codec-to-sun8i-v3s.dtsi.patch \
+    file://0004-arm-dts-sunxi-v3s-add-LCD.patch \
 "

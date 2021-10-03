@@ -1,0 +1,22 @@
+From 6c3b4b280120b60dd9b05f63df0d5b60574e501b Mon Sep 17 00:00:00 2001
+From: Andreas Rehn <andreas.rehn@daimler.com>
+Date: Sun, 26 Sep 2021 22:50:31 +0200
+Subject: [PATCH] arm: dts: sunxi: v3s: add LCD
+
+add LCD TFT 800x480 Original Lichee Pi Zero LCD
+---
+ arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dts | 98 +++++++++++++++++++
+ 1 file changed, 98 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dts b/arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dts
+index 2e4587d26ce5..829d47be9492 100644
+--- a/arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dts
++++ b/arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dts
+@@ -43,6 +43,7 @@
+ /dts-v1/;
+ #include "sun8i-v3s.dtsi"
+ #include "sunxi-common-regulators.dtsi"
++#include "original_lichee_pi_zero_lcd_display.dtsi"
+
+ / {
+ 	model = "Lichee Pi Zero";

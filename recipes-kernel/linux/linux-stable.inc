@@ -36,14 +36,8 @@ KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT}"
 S = "${WORKDIR}/git"
 
 SRC_URI_append_sun8i = " \
+    git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git;branch=linux-${LINUX_VERSION}.y \
     file://defconfig \
-    file://001-modify-sun8i-v3s.dtsi.patch \
-    file://002-add-original-lichee-pi-zero-lcd-display.dtsi.patch \
-    file://003-add-original-lichee-pi-zero-lcd-touchscreen.dtsi.patch \
-    file://004-modify-sun8i-v3s-licheepi-zero.dts.patch \
-    file://005-modify-sun8i-v3s-licheepi-zero-dock.dts.patch \
-    file://006-add-audio-codec-to-sun8i-v3s.dtsi.patch \
-    file://007-enable-uart2-sun8i-v3s-licheepi-zero-dock.dts.patch \
 "
 
 # Set a variable in .configure

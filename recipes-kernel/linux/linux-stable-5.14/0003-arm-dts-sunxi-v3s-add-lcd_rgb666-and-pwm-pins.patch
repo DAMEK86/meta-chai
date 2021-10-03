@@ -1,0 +1,46 @@
+From 91f4ddf7708bf272a6bb7440cecdfa876a3f0da1 Mon Sep 17 00:00:00 2001
+From: Andreas Rehn <andreas.rehn@daimler.com>
+Date: Sun, 3 Oct 2021 17:28:50 +0200
+Subject: [PATCH] arm: dts: sunxi: v3s: add lcd_rgb666 and pwm pins
+
+---
+ arch/arm/boot/dts/sun8i-v3s.dtsi | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-v3s.dtsi b/arch/arm/boot/dts/sun8i-v3s.dtsi
+index b30bc1a25ebb..67cbe33ba65b 100644
+--- a/arch/arm/boot/dts/sun8i-v3s.dtsi
++++ b/arch/arm/boot/dts/sun8i-v3s.dtsi
+@@ -386,6 +386,15 @@ i2c1_pe_pins: i2c1-pe-pins {
+ 				function = "i2c1";
+ 			};
+
++			lcd_rgb666_pins: lcd-rgb666-pins {
++				pins = "PE0", "PE1", "PE2", "PE3", "PE4",
++				       "PE5", "PE6", "PE7", "PE8", "PE9",
++				       "PE10", "PE11", "PE12", "PE13", "PE14",
++				       "PE15", "PE16", "PE17", "PE18", "PE19",
++				       "PE23", "PE24";
++				function = "lcd";
++			};
++
+ 			uart0_pb_pins: uart0-pb-pins {
+ 				pins = "PB8", "PB9";
+ 				function = "uart0";
+@@ -412,6 +421,16 @@ mmc1_pins: mmc1-pins {
+ 				bias-pull-up;
+ 			};
+
++			pwm1_pins: pwm1-pins{
++				pins = "PB5";
++				function = "pwm1";
++			};
++
++			pwm0_pins: pwm0-pins {
++				pins = "PB4";
++				function = "pwm0";
++			};
++
+ 			spi0_pins: spi0-pins {
+ 				pins = "PC0", "PC1", "PC2", "PC3";
+ 				function = "spi0";
