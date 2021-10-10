@@ -19,6 +19,7 @@ KERNEL_ENABLE_NFS ?= "0"
 KERNEL_ENABLE_SCSI ?= "0"
 KERNEL_ENABLE_AXP20X ?= "0"
 KERNEL_ENABLE_MTD ?= "1"
+KERNEL_ENABLE_V4L2 ?= "0"
 
 LOCALVERSION ?= ""
 KCONFIG_MODE ?= "alldefconfig"
@@ -121,7 +122,6 @@ do_configure_prepend() {
     kernel_conf_variable DEVTMPFS y
     kernel_conf_variable DEVTMPFS_MOUNT y
     # kernel_conf_variable DEBUG_FS y
-    # kernel_conf_variable MEDIA_SUPPORT y
     # kernel_conf_variable FTRACE y
     # kernel_conf_variable MODULES y
     # kernel_conf_variable MODULE_UNLOAD y
@@ -148,6 +148,17 @@ do_configure_prepend() {
     else
         kernel_conf_variable DRM n
         kernel_conf_variable FB n
+    fi
+
+    if [ "${KERNEL_ENABLE_V4L2}" = "1" ]; then
+        kernel_conf_variable STAGING_MEDIA y
+        kernel_conf_variable MEDIA_SUPPORT y
+        kernel_conf_variable V4L_PLATFORM_DRIVERS y
+        kernel_conf_variable VIDEO_SUNXI y
+        kernel_conf_variable VIDEO_SUNXI_CEDRUS y
+        kernel_conf_variable VIDEO_DEV y
+        kernel_conf_variable MEDIA_SUPPORT_FILTER n
+        kernel_conf_variable VIDEO_V4L2 y
     fi
 
     # Activate the configuration options for alsa
