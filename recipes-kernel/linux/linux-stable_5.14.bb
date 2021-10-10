@@ -23,4 +23,6 @@ SRC_URI_append = " \
     file://0003-arm-dts-sunxi-v3s-add-lcd_rgb666-and-pwm-pins.patch \
     file://002-add-original-lichee-pi-zero-lcd-display.dtsi.patch \
     file://0004-arm-dts-sunxi-v3s-add-LCD.patch \
+    file://0005-ARM-dts-sun8i-v3s-Add-node-for-system-control.patch \
+    file://0006-ARM-dts-sun8i-v3s-Add-video-engine-node.patch \
 "
