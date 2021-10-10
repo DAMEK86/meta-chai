@@ -137,11 +137,11 @@ do_configure_prepend() {
     if [ "${screen}" = "1" ]; then
         kernel_conf_variable DRM y
         kernel_conf_variable DRM_SUN4I y
+        kernel_conf_variable DRM_PANEL_SIMPLE y
+        kernel_conf_variable DRM_SUN8I_MIXER y
         kernel_conf_variable FB y
         kernel_conf_variable FB_SIMPLE y
         kernel_conf_variable FB_SSD1307 y
-        kernel_conf_variable DRM_PANEL_SIMPLE y
-        kernel_conf_variable DRM_SUN8I_MIXER y
         kernel_conf_variable BACKLIGHT_PWM y
         kernel_conf_variable PWM_SUN4I y
         bbplain "screen cfg added"
