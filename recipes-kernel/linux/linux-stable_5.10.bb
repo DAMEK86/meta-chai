@@ -15,8 +15,8 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/linux-stable-${LINUX_VERSION}:"
 
 S = "${WORKDIR}/git"
 
-PV = "5.10.67"
-SRCREV = "faf816b0f8d0fa8ea24f579fb6a51e5ed3efd750"
+PV = "5.10.82"
+SRCREV = "d5259a9ba6993a843278203323902bc0c049097e"
 SRC_URI_append = " \
     file://001-modify-sun8i-v3s.dtsi.patch \
     file://002-add-original-lichee-pi-zero-lcd-display.dtsi.patch \
