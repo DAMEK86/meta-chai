@@ -1,6 +1,16 @@
+From 9f140d528388db623199b428e0cef4960c83aaa9 Mon Sep 17 00:00:00 2001
+From: Andreas Rehn <rehn.andreas86@gmail.com>
+Date: Wed, 7 Apr 2021 10:56:41 +0200
+Subject: [PATCH] u-boot: add support for Lichee Pi Zero Dock
+
+---
+ configs/LicheePi_Zero_Dock_defconfig | 7 +++++++
+ 1 file changed, 7 insertions(+)
+ create mode 100644 configs/LicheePi_Zero_Dock_defconfig
+
 diff --git a/configs/LicheePi_Zero_Dock_defconfig b/configs/LicheePi_Zero_Dock_defconfig
 new file mode 100644
-index 0000000000..04d7b64504
+index 0000000000..d890151f80
 --- /dev/null
 +++ b/configs/LicheePi_Zero_Dock_defconfig
 @@ -0,0 +1,7 @@

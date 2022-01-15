@@ -1,8 +1,18 @@
+From 296884887eb9eaa933b84676a60be1b5a9395ef3 Mon Sep 17 00:00:00 2001
+From: Andreas Rehn <rehn.andreas86@gmail.com>
+Date: Wed, 7 Apr 2021 10:56:41 +0200
+Subject: [PATCH] u-boot: add support for Lichee Pi Zero Dock
+
+---
+ arch/arm/dts/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index c6710826a0..c9d1136c32 100644
+index b3e2a9c9d7..b0130c1b21 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -598,6 +598,7 @@ dtb-$(CONFIG_MACH_SUN8I_R40) += \
+@@ -639,7 +639,8 @@ dtb-$(CONFIG_MACH_SUN8I_R40) += \
+ 	sun8i-v40-bananapi-m2-berry.dtb
  dtb-$(CONFIG_MACH_SUN8I_V3S) += \
  	sun8i-s3-pinecube.dtb \
 -	sun8i-v3s-licheepi-zero.dtb

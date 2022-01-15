@@ -1,7 +1,7 @@
-From f026d026d93df7fa1e53844181fdc9a709d66cef Mon Sep 17 00:00:00 2001
+From d1e339af356543f9c720a94a791d73cac52b3711 Mon Sep 17 00:00:00 2001
 From: Andreas Rehn <rehn.andreas86@gmail.com>
 Date: Fri, 6 Aug 2021 22:52:44 +0200
-Subject: [PATCH 1/1] sunxi: v3s: add ethernet
+Subject: [PATCH] sunxi: v3s: add ethernet
 
 ---
  drivers/clk/sunxi/clk_v3s.c |  5 +++++
@@ -9,7 +9,7 @@ Subject: [PATCH 1/1] sunxi: v3s: add ethernet
  2 files changed, 26 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/clk/sunxi/clk_v3s.c b/drivers/clk/sunxi/clk_v3s.c
-index 29622199fd..136d817bb6 100644
+index cce5c658ca..44d545de99 100644
 --- a/drivers/clk/sunxi/clk_v3s.c
 +++ b/drivers/clk/sunxi/clk_v3s.c
 @@ -17,6 +17,7 @@ static struct ccu_clk_gate v3s_gates[] = {
@@ -20,7 +20,7 @@ index 29622199fd..136d817bb6 100644
  	[CLK_BUS_SPI0]		= GATE(0x060, BIT(20)),
  	[CLK_BUS_OTG]		= GATE(0x060, BIT(24)),
  
-@@ -24,6 +25,8 @@ static struct ccu_clk_gate v3s_gates[] = {
+@@ -26,6 +27,8 @@ static struct ccu_clk_gate v3s_gates[] = {
  	[CLK_BUS_UART1]		= GATE(0x06c, BIT(17)),
  	[CLK_BUS_UART2]		= GATE(0x06c, BIT(18)),
  
@@ -29,7 +29,7 @@ index 29622199fd..136d817bb6 100644
  	[CLK_SPI0]		= GATE(0x0a0, BIT(31)),
  
  	[CLK_USB_PHY0]          = GATE(0x0cc, BIT(8)),
-@@ -35,8 +38,10 @@ static struct ccu_reset v3s_resets[] = {
+@@ -37,8 +40,10 @@ static struct ccu_reset v3s_resets[] = {
  	[RST_BUS_MMC0]		= RESET(0x2c0, BIT(8)),
  	[RST_BUS_MMC1]		= RESET(0x2c0, BIT(9)),
  	[RST_BUS_MMC2]		= RESET(0x2c0, BIT(10)),
@@ -38,13 +38,13 @@ index 29622199fd..136d817bb6 100644
  	[RST_BUS_OTG]		= RESET(0x2c0, BIT(24)),
 +	[RST_BUS_EPHY]		= RESET(0x2c8, BIT(2)),
  
- 	[RST_BUS_UART0]		= RESET(0x2d8, BIT(16)),
- 	[RST_BUS_UART1]		= RESET(0x2d8, BIT(17)),
+ 	[RST_BUS_I2C0]		= RESET(0x2d8, BIT(0)),
+ 	[RST_BUS_I2C1]		= RESET(0x2d8, BIT(1)),
 diff --git a/drivers/net/sun8i_emac.c b/drivers/net/sun8i_emac.c
-index d7553fe163..aa15c62477 100644
+index 2e24d12214..21617211d0 100644
 --- a/drivers/net/sun8i_emac.c
 +++ b/drivers/net/sun8i_emac.c
-@@ -145,6 +145,7 @@ enum emac_variant {
+@@ -142,6 +142,7 @@ enum emac_variant {
  	A64_EMAC,
  	R40_GMAC,
  	H6_EMAC,
@@ -52,7 +52,7 @@ index d7553fe163..aa15c62477 100644
  };
  
  struct emac_dma_desc {
-@@ -307,7 +308,7 @@ static void sun8i_adjust_link(struct emac_eth_dev *priv,
+@@ -304,7 +305,7 @@ static void sun8i_adjust_link(struct emac_eth_dev *priv,
  static u32 sun8i_emac_set_syscon_ephy(struct emac_eth_dev *priv, u32 reg)
  {
  	if (priv->use_internal_phy) {
@@ -61,7 +61,7 @@ index d7553fe163..aa15c62477 100644
  		 * needs to be configured and powered up before use
  		*/
  		reg &= ~H3_EPHY_DEFAULT_MASK;
-@@ -347,7 +348,8 @@ static int sun8i_emac_set_syscon(struct sun8i_eth_pdata *pdata,
+@@ -344,7 +345,8 @@ static int sun8i_emac_set_syscon(struct sun8i_eth_pdata *pdata,
  	reg &= ~(SC_ETCS_MASK | SC_EPIT);
  	if (priv->variant == H3_EMAC ||
  	    priv->variant == A64_EMAC ||
@@ -71,7 +71,7 @@ index d7553fe163..aa15c62477 100644
  		reg &= ~SC_RMII_EN;
  
  	switch (priv->interface) {
-@@ -358,7 +360,8 @@ static int sun8i_emac_set_syscon(struct sun8i_eth_pdata *pdata,
+@@ -355,7 +357,8 @@ static int sun8i_emac_set_syscon(struct sun8i_eth_pdata *pdata,
  	case PHY_INTERFACE_MODE_RGMII_ID:
  	case PHY_INTERFACE_MODE_RGMII_RXID:
  	case PHY_INTERFACE_MODE_RGMII_TXID:
@@ -81,7 +81,7 @@ index d7553fe163..aa15c62477 100644
  		break;
  	case PHY_INTERFACE_MODE_RMII:
  		if (priv->variant == H3_EMAC ||
-@@ -476,12 +479,14 @@ static int sun8i_emac_eth_start(struct udevice *dev)
+@@ -473,12 +476,14 @@ static int sun8i_emac_eth_start(struct udevice *dev)
  	int ret;
  
  	/* Soft reset MAC */
@@ -102,7 +102,7 @@ index d7553fe163..aa15c62477 100644
  	}
  
  	/* Rewrite mac address after reset */
-@@ -570,6 +575,9 @@ static int parse_phy_pins(struct udevice *dev)
+@@ -567,6 +572,9 @@ static int parse_phy_pins(struct udevice *dev)
  		iomux = SUN8I_IOMUX;
  	else if (IS_ENABLED(CONFIG_MACH_SUN50I))
  		iomux = SUN8I_IOMUX;
@@ -112,7 +112,7 @@ index d7553fe163..aa15c62477 100644
  	else
  		BUILD_BUG_ON_MSG(1, "missing pinmux value for Ethernet pins");
  
-@@ -960,7 +968,8 @@ static int sun8i_emac_eth_of_to_plat(struct udevice *dev)
+@@ -957,7 +965,8 @@ static int sun8i_emac_eth_of_to_plat(struct udevice *dev)
  		return -EINVAL;
  	}
  
@@ -122,7 +122,7 @@ index d7553fe163..aa15c62477 100644
  		ret = sun8i_handle_internal_phy(dev, priv);
  		if (ret)
  			return ret;
-@@ -1013,6 +1022,8 @@ static const struct udevice_id sun8i_emac_eth_ids[] = {
+@@ -1010,6 +1019,8 @@ static const struct udevice_id sun8i_emac_eth_ids[] = {
  		.data = (uintptr_t)R40_GMAC },
  	{.compatible = "allwinner,sun50i-h6-emac",
  		.data = (uintptr_t)H6_EMAC },
@@ -130,3 +130,4 @@ index d7553fe163..aa15c62477 100644
 +		.data = (uintptr_t)V3S_EMAC },
  	{ }
  };
+ 
