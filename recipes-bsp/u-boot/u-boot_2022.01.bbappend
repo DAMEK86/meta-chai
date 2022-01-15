@@ -1,7 +1,7 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI_append_sun8i = " \
-    file://2021.07-001-add-ethernet-to-v3s.dtsi.patch \
+    file://001-add-ethernet-to-v3s.dtsi.patch \
 "
 
 SRC_URI_append_licheepizero-dock = " \
