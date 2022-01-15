@@ -8,15 +8,15 @@ COMPATIBLE_MACHINE = "(licheepizero|licheepizero-dock)"
 
 PR_append = ".chai"
 
-LINUX_VERSION = "5.15"
+LINUX_VERSION = "5.16"
 LINUX_VERSION_EXTENSION = "-chai"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/linux-stable-${LINUX_VERSION}:"
 
 S = "${WORKDIR}/git"
 
-PV = "5.15.5"
-SRCREV = "f00712e27083550be3031099b7697925533a6e01"
+PV = "5.16.0"
+SRCREV = "df0cc57e057f18e44dac8e6c18aba47ab53202f9"
 SRC_URI_append = " \
     file://0001-arm-dts-sunxi-v3s-enable-audio-codec.patch \
     file://0002-arm-dts-sunxi-v3s-add-touchscreen-ns2009.patch \
