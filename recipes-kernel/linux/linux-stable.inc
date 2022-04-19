@@ -26,7 +26,7 @@ KCONFIG_MODE ?= "alldefconfig"
 KMACHINE ?= "${MACHINE}"
 
 # Pull in the devicetree files into the rootfs
-#RDEPENDS_${KERNEL_PACKAGE_NAME}-base += "kernel-devicetree"
+RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
 
 # Set the verbosity of kernel messages during runtime
 # You can define CMDLINE_DEBUG in your local.conf or distro.conf to override this behaviour
@@ -113,7 +113,7 @@ do_configure_prepend() {
     kernel_conf_variable UEVENT_HELPER_PATH \"\"
     kernel_conf_variable UNIX y
     kernel_conf_variable SYSFS y
-    # kernel_conf_variable PROC_FS y
+    kernel_conf_variable PROC_FS y
     kernel_conf_variable TMPFS y
     kernel_conf_variable INOTIFY_USER y
     kernel_conf_variable SIGNALFD y
@@ -121,7 +121,7 @@ do_configure_prepend() {
     kernel_conf_variable BLK_DEV_BSG y
     kernel_conf_variable DEVTMPFS y
     kernel_conf_variable DEVTMPFS_MOUNT y
-    # kernel_conf_variable DEBUG_FS y
+    kernel_conf_variable DEBUG_FS y
     # kernel_conf_variable FTRACE y
     # kernel_conf_variable MODULES y
     # kernel_conf_variable MODULE_UNLOAD y
@@ -212,17 +212,16 @@ do_configure_prepend() {
 
     if [ "${KERNEL_ENABLE_MTD}" = "1" ]; then
         kernel_conf_variable MTD y
-        #kernel_conf_variable MTD_TESTS y
-        kernel_conf_variable MTD_SWAP y
-        kernel_conf_variable MTD_CFI y
-        kernel_conf_variable MTD_JEDECPROBE y
-        kernel_conf_variable MTD_CFI_INTELEXT y
-        kernel_conf_variable MTD_CFI_AMDSTD y
-        kernel_conf_variable MTD_CFI_STAA y
-        kernel_conf_variable MTD_IMPA7 y
-        kernel_conf_variable MTD_PLATRAM y
-        kernel_conf_variable MTD_BLOCK2MTD y
         kernel_conf_variable MTD_SPI_NOR y
+
+        kernel_conf_variable MTD_UBI y
+        kernel_conf_variable MTD_UBI_BLOCK y
+        kernel_conf_variable UBIFS_FS y
+        kernel_conf_variable UBIFS_FS_ADVANCED_COMPR y
+
+        kernel_conf_variable SQUASHFS y
+        kernel_conf_variable SQUASHFS_FILE_DIRECT y
+        kernel_conf_variable SQUASHFS_LZ4 y
     fi
 
     if [ "${KERNEL_ENABLE_AXP20X}" = "1" ]; then

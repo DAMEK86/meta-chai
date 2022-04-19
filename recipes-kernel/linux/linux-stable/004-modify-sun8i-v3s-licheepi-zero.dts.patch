@@ -40,12 +40,12 @@ index 2e4587d26ce5..829d47be9492 100644
 +&spi0 {
 +	status = "okay";
 +
-+	flash0: gd25q64@0 {
++	flash0: gd25q128@0 {
 +		#address-cells = <1>;
 +		#size-cells = <1>;
 +		compatible = "jedec,spi-nor";
 +		reg = <0>;
-+		spi-max-frequency = <133000000>;
++		spi-max-frequency = <50000000>;
 +		partitions {
 +			compatible = "fixed-partitions";
 +			#address-cells = <1>;
@@ -53,12 +53,12 @@ index 2e4587d26ce5..829d47be9492 100644
 +
 +			partition@0 {
 +				label = "u-boot";
-+				reg = <0x000000 0x40000>;
++				reg = <0x000000 0x80000>;
 +			};
 +
-+			partition@110000 {
-+				label = "rootubi";
-+				reg = <0x40000 0x7C0000>;
++			partition@80000 {
++				label = "ubi";
++				reg = <0x80000 0xf80000>;
 +			};
 +		};
 +	};

@@ -1,0 +1,39 @@
+CONFIG_SPI=y
+CONFIG_SPI_FLASH=y
+CONFIG_SPI_FLASH_GIGADEVICE=y
+
+CONFIG_CMD_SPI=y
+CONFIG_CMD_SF=y
+CONFIG_DM_SPI=y
+CONFIG_SPI_SUNXI=y
+
+CONFIG_MTD=y
+CONFIG_DM_MTD=y
+CONFIG_SPI_FLASH_MTD=y
+CONFIG_DM_SPI_FLASH=y
+
+CONFIG_CMD_UBI=y
+CONFIG_CMD_MTDPARTS=y
+CONFIG_MTD_PARTITIONS=y
+CONFIG_MTD_DEVICE=y
+CONFIG_CMD_UBIFS=y
+CONFIG_MTD_CMDLINE_PARTS=y
+CONFIG_SPL_MTD_SUPPORT=y
+CONFIG_SPL_SPI_SUNXI=y
+
+CONFIG_MTDIDS_DEFAULT="nor0=spi-flash"
+CONFIG_MTDPARTS_DEFAULT="mtdparts=spi-flash:512k(uboot),-(sys)"
+CONFIG_HAVE_BLOCK_DEVICE=y
+# TODO: enable bootcommand for nor-flash loading until boot cmd not working as expected
+CONFIG_BOOTDELAY=2
+CONFIG_USE_BOOTCOMMAND=y
+#define CONFIG_BOOTARGS "ubi.mtd=4 root=ubi0:root1 rootfstype=ubifs console=ttyS0,115200 earlyprintk mtdparts=atmel_nand:256k(bootstrap)ro,512k(uboot)ro,256k(env1),256k(env2),-(sys)"
+CONFIG_BOOTCOMMAND="sf probe 0 50000000; mtdparts default; setenv bootargs ubi.mtd=1 root=ubi0:rootfs rootfstype=ubifs panic=5 rootwait console=ttyS0,115200 earlyprintk mtdparts=spi-flash:512k(uboot),-(sys); ubi part sys; ubi read 0x43000000 kernel; ubi read 0x42000000 dtb; bootz 0x42000000 - 0x43000000"
+
+#define CONFIG_BOOTARGS "ubi.mtd=2 root=ubi0:rootfs rootfstype=ubifs panic=5 rootwait console=ttyS0,115200 earlyprintk mtdparts=spi-flash:512k(uboot),32k(env),-(sys)"
+#CONFIG_BOOTCOMMAND="mtdparts default; sf probe 0 50000000; ubi part sys; ubi read 0x43000000 kernel; ubi read 0x42000000 dtb; bootz 0x42000000 - 0x43000000"
+
+CONFIG_SUNXI_SPI=y
+SPL_SPI_FLASH_MTD=y
+
+# CONFIG_ENV_VARS_UBOOT_CONFIG=y

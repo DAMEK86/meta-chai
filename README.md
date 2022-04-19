@@ -59,12 +59,17 @@ to enable network boot, you need to enable kernel features by adding `KERNEL_ENA
 after this, your kernel shall be able to mount a nfs as rootfs
 
 use the kernel cmdline to tell the kernel we want to use a network rootfs. I used the following script in u-boot cmd for my testing:
-
 ```bash
 setenv bootargs "console=ttyS0,115200 root=/dev/nfs ip=192.168.5.78:192.168.5.80:192.168.5.80:255.255.255.0:licheepizero-dock:eth0 nfsroot=192.168.5.80:/export,tcp,v3 rootwait panic=2 debug"
 setenv origbootcmd "$bootcmd"
 setenv ipaddr 192.168.5.78
 setenv bootcmd "tftp 0x42000000 192.168.5.80:zImage; tftp 0x43000000 192.168.5.80:sun8i-v3s-licheepi-zero-dock.dtb; bootz 0x42000000 - 0x43000000"
+run bootcmd
+```
+
+```bash
+setenv bootargs "console=ttyS0,115200 panic=5 rootwait ubi.mtd=1 ubi.block=0,rootfs ubi.block=0,data root=/dev/ubiblock0_2"
+setenv bootcmd "sf probe 0 50000000; ubi part rootubi; ubi read ${kernel_addr_r} kernel; ubi read ${fdt_addr_r} dtb; ubi detach; bootz ${kernel_addr_r} - ${fdt_addr_r}"
 run bootcmd
 ```
 

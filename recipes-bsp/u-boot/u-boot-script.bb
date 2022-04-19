@@ -10,6 +10,7 @@ SRC_URI = " \
 
 UBOOT_ENV = "boot"
 UBOOT_ENV_SUFFIX = "scr"
+UBOOT_ENV_BINARY = "${UBOOT_ENV}.${UBOOT_ENV_SUFFIX}"
 
 inherit deploy nopackages
 
@@ -17,20 +18,20 @@ do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_mkimage() {
-    mkimage -C none -A arm -T script -d ${WORKDIR}/boot.cmd ${B}/${UBOOT_ENV}.${UBOOT_ENV_SUFFIX}
+    mkimage -C none -A arm -T script -d ${WORKDIR}/boot.cmd ${B}/${UBOOT_ENV_BINARY}
 }
 
 addtask mkimage after do_compile before do_install
 
 do_install() {
-    install -Dm 0644 ${B}/boot.scr ${D}/boot.scr
+    install -Dm 0644 ${B}/${UBOOT_ENV_BINARY} ${D}/${UBOOT_ENV_BINARY}
 }
 
 do_deploy() {
-    install -Dm 0644 ${D}/boot.scr ${DEPLOYDIR}/boot.scr-${MACHINE}-${PV}-${PR}
+    install -Dm 0644 ${D}/${UBOOT_ENV_BINARY} ${DEPLOYDIR}/${UBOOT_ENV_BINARY}-${MACHINE}-${PV}-${PR}
     cd ${DEPLOYDIR}
-    rm -f boot.scr-${MACHINE}
-    ln -sf boot.scr-${MACHINE}-${PV}-${PR} boot.scr-${MACHINE}
+    rm -f ${UBOOT_ENV_BINARY}-${MACHINE}
+    ln -sf ${UBOOT_ENV_BINARY}-${MACHINE}-${PV}-${PR} ${UBOOT_ENV_BINARY}
 }
 
 addtask deploy after do_install before do_build
