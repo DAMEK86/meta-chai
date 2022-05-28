@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 # NB: this is only for the main logo image; if you add multiple images here,
 # poky will build multiple psplash packages with 'outsuffix' in name for
