@@ -6,18 +6,18 @@ KERNEL_CONFIG_COMMAND = "oe_runmake_call -C ${S} CC="${KERNEL_CC}" O=${B} olddef
 
 COMPATIBLE_MACHINE = "(licheepizero|licheepizero-dock)"
 
-PR_append = ".chai"
+PR:append = ".chai"
 
 LINUX_VERSION = "5.17"
 LINUX_VERSION_EXTENSION = "-chai"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux-stable-${LINUX_VERSION}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/linux-stable-${LINUX_VERSION}:"
 
 S = "${WORKDIR}/git"
 
 PV = "5.17.0"
 SRCREV = "f443e374ae131c168a065ea1748feac6b2e76613"
-SRC_URI_append = " \
+SRC_URI:append = " \
     file://0001-arm-dts-sunxi-v3s-enable-audio-codec.patch \
     file://0002-arm-dts-sunxi-v3s-add-touchscreen-ns2009.patch \
     file://0003-arm-dts-sunxi-v3s-add-lcd_rgb666-and-pwm-pins.patch \

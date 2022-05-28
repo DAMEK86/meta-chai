@@ -10,7 +10,7 @@ inherit kernel siteinfo
 require recipes-kernel/linux/linux-yocto.inc
 
 COMPATIBLE_MACHINE = "sun8i"
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux-stable:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/linux-stable:"
 
 # Enable OABI compat for people stuck with obsolete userspace
 ARM_KEEP_OABI ?= "0"
@@ -36,8 +36,13 @@ KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT}"
 
 S = "${WORKDIR}/git"
 
-SRC_URI_append_sun8i = " \
+KMETA = "kernel-meta"
+KCONF_BSP_AUDIT_LEVEL = "1"
+SRCREV_meta ?= "fcf48627ea549df12be5d651521fc97a01b1986c"
+
+SRC_URI:append:sun8i = " \
     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git;branch=linux-${LINUX_VERSION}.y \
+    git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-5.15;destsuffix=${KMETA} \
     file://defconfig \
 "
 
@@ -71,10 +76,10 @@ config_setup() {
     # populate ${B}.config from either ${S}.config (if it exists) for custom
     # developer changes, or otherwise from ${WORDIR}/defconfig.
     #
-    # - In linux-raspberrypi, we add do_configure_prepend, which tweaks
+    # - In linux-raspberrypi, we add do_configure:prepend, which tweaks
     # ${B}.config. Since this runs *before* the kernel.bbclass do_configure,
     # ${B}.config doesn't yet exist and we hit an error. Thus we need to move
-    # the logic from do_configure up to before our do_configure_prepend. Because
+    # the logic from do_configure up to before our do_configure:prepend. Because
     # we are copying only a portion of do_configure and not the whole thing,
     # there is no clean way to do it using OE functionality, so we just
     # copy-and-paste.
@@ -83,13 +88,13 @@ config_setup() {
     fi
 
     # Copy defconfig to .config if .config does not exist. This allows
-    # recipes to manage the .config themselves in do_configure_prepend().
+    # recipes to manage the .config themselves in do_configure:prepend().
     if [ -f "${WORKDIR}/defconfig" ] && [ ! -f "${B}/.config" ]; then
         cp "${WORKDIR}/defconfig" "${B}/.config"
     fi
 }
 
-do_configure_prepend() {
+do_configure:prepend() {
     config_setup
 
     mv -f ${B}/.config ${B}/.config.patched
@@ -242,18 +247,18 @@ do_configure_prepend() {
     yes '' | oe_runmake -C ${S} O=${B} oldconfig
 }
 
-do_configure_append() {
+do_configure:append() {
     if test -e scripts/Makefile.fwinst ; then
         sed -i -e "s:-m0644:-m 0644:g" scripts/Makefile.fwinst
     fi
 }
 
-do_install_append() {
+do_install:append() {
     oe_runmake headers_install INSTALL_HDR_PATH=${D}${exec_prefix}/src/linux-${KERNEL_VERSION} ARCH=$ARCH
 }
 
 PACKAGES =+ "kernel-headers"
-FILES_kernel-headers = "${exec_prefix}/src/linux*"
+FILES:kernel-headers = "${exec_prefix}/src/linux*"
 
 
-FILES_${KERNEL_PACKAGE_NAME}-base_append = " ${nonarch_base_libdir}/modules/${KERNEL_VERSION}/modules.builtin.modinfo"
+FILES:${KERNEL_PACKAGE_NAME}-base:append = " ${nonarch_base_libdir}/modules/${KERNEL_VERSION}/modules.builtin.modinfo"

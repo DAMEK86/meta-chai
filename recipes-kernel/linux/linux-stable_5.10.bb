@@ -6,18 +6,18 @@ KERNEL_CONFIG_COMMAND = "oe_runmake_call -C ${S} CC="${KERNEL_CC}" O=${B} olddef
 
 COMPATIBLE_MACHINE = "(licheepizero|licheepizero-dock)"
 
-PR_append = ".chai"
+PR:append = ".chai"
 
 LINUX_VERSION = "5.10"
 LINUX_VERSION_EXTENSION = "-chai"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux-stable-${LINUX_VERSION}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/linux-stable-${LINUX_VERSION}:"
 
 S = "${WORKDIR}/git"
 
 PV = "5.10.108"
 SRCREV = "9940314ebfc61cb7bc7fca4a0deed2f27fdefd11"
-SRC_URI_append = " \
+SRC_URI:append = " \
     file://001-modify-sun8i-v3s.dtsi.patch \
     file://002-add-original-lichee-pi-zero-lcd-display.dtsi.patch \
     file://003-add-original-lichee-pi-zero-lcd-touchscreen.dtsi.patch \
