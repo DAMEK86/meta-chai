@@ -15,9 +15,11 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/linux-stable-${LINUX_VERSION}:"
 
 S = "${WORKDIR}/git"
 
-PV = "5.10.108"
-SRCREV = "9940314ebfc61cb7bc7fca4a0deed2f27fdefd11"
+PV = "5.10.118"
+SRCREV = "c204ee3350ebbc4e2ab108cbce7afc0cac1c407d"
+SRCREV_meta = "19e7547dd6617760d6094b7a42da1a718b5a96ee"
 SRC_URI:append = " \
+    git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-5.10;destsuffix=${KMETA} \
     file://001-modify-sun8i-v3s.dtsi.patch \
     file://002-add-original-lichee-pi-zero-lcd-display.dtsi.patch \
     file://003-add-original-lichee-pi-zero-lcd-touchscreen.dtsi.patch \
