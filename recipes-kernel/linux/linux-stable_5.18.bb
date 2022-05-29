@@ -8,16 +8,18 @@ COMPATIBLE_MACHINE = "(licheepizero|licheepizero-dock)"
 
 PR:append = ".chai"
 
-LINUX_VERSION = "5.17"
+LINUX_VERSION = "5.18"
 LINUX_VERSION_EXTENSION = "-chai"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-stable-${LINUX_VERSION}:"
 
 S = "${WORKDIR}/git"
 
-PV = "5.17.0"
-SRCREV = "f443e374ae131c168a065ea1748feac6b2e76613"
+PV = "5.18.0"
+SRCREV = "4b0986a3613c92f4ec1bdc7f60ec66fea135991f"
+SRCREV_meta ?= "fcf48627ea549df12be5d651521fc97a01b1986c"
 SRC_URI:append = " \
+    git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-5.15;destsuffix=${KMETA} \
     file://0001-arm-dts-sunxi-v3s-enable-audio-codec.patch \
     file://0002-arm-dts-sunxi-v3s-add-touchscreen-ns2009.patch \
     file://0003-arm-dts-sunxi-v3s-add-lcd_rgb666-and-pwm-pins.patch \

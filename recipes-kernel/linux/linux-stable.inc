@@ -38,11 +38,9 @@ S = "${WORKDIR}/git"
 
 KMETA = "kernel-meta"
 KCONF_BSP_AUDIT_LEVEL = "1"
-SRCREV_meta ?= "fcf48627ea549df12be5d651521fc97a01b1986c"
 
 SRC_URI:append:sun8i = " \
     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git;branch=linux-${LINUX_VERSION}.y \
-    git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-5.15;destsuffix=${KMETA} \
     file://defconfig \
 "
 
