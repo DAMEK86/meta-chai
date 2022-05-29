@@ -80,6 +80,13 @@ as a reference have a look into [community.arm.com](https://community.arm.com/de
 sunxi-tools from github can be used for u-boot / kernel developing and nor-flash programming
 __HINT:__ official prebuilt packages for ubuntu/debian seems to not working on ubuntu 20.x
 
+## dev.rules
+```bash
+/etc/udev/rules.d/50-sunxi-fel.rules
+
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="1f3a", ATTRS{idProduct}=="efe8", MODE:="0666"
+```
+
 ### how to build sunxi-tools
 
 ```bash
@@ -107,6 +114,16 @@ sudo ./sunxi-tools/sunxi-fel \
     spiflash-write 0x0e0000 sun8i-v3s-licheepi-zero-dock-licheepizero-dock.dtb \
     spiflash-write 0x100000 zImage-licheepizero-dock.bin
 sudo ./sunxi-tools/sunxi-fel uboot u-boot-sunxi-with-spl.bin
+```
+
+### flashing ubi image
+
+TODO: fix `/bin/sh: can't access tty; job control turned off` and use overlayfs  
+if using tiny distro
+
+```bash
+# offset from u-boot 0x80000 (524288/1024=512K)
+sunxi-fel -v -p spiflash-write 0x80000 smart-grid-image-licheepizero-dock.ubi
 ```
 
 for booting from flash

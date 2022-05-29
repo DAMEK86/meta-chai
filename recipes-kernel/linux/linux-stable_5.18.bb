@@ -27,4 +27,5 @@ SRC_URI:append = " \
     file://0004-arm-dts-sunxi-v3s-add-LCD.patch \
     file://0005-ARM-dts-sun8i-v3s-Add-node-for-system-control.patch \
     file://0006-ARM-dts-sun8i-v3s-Add-video-engine-node.patch \
+    file://0007-arm-dts-sun8i-v3s-enable-spi0.patch \
 "
