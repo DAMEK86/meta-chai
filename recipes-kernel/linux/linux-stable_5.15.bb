@@ -8,15 +8,15 @@ COMPATIBLE_MACHINE = "(licheepizero|licheepizero-dock)"
 
 PR:append = ".chai"
 
-LINUX_VERSION = "5.18"
+LINUX_VERSION = "5.15"
 LINUX_VERSION_EXTENSION = "-chai"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-stable-${LINUX_VERSION}:"
 
 S = "${WORKDIR}/git"
 
-PV = "5.18.0"
-SRCREV = "4b0986a3613c92f4ec1bdc7f60ec66fea135991f"
+PV = "5.15.80"
+SRCREV = "71e496bd338221709b180b60ba419fa542c2b320"
 SRCREV_meta ?= "fcf48627ea549df12be5d651521fc97a01b1986c"
 SRC_URI:append = " \
     git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-5.15;destsuffix=${KMETA} \
