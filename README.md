@@ -131,3 +131,10 @@ for booting from flash
 ```bash
 sudo ./sunxi-tools/sunxi-fel spiflash-write 0x0 u-boot-sunxi-with-spl.bin
 ```
+
+### erasing 16 MB flash
+
+```bash
+sf probe
+sf erase 0x0 0x1000000
+```
