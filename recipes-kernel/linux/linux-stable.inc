@@ -216,6 +216,7 @@ do_configure:prepend() {
     if [ "${KERNEL_ENABLE_MTD}" = "1" ]; then
         kernel_conf_variable MTD y
         kernel_conf_variable MTD_SPI_NOR y
+        kernel_conf_variable MTD_SPI_NOR_USE_4K_SECTORS y
 
         kernel_conf_variable MTD_UBI y
         kernel_conf_variable MTD_UBI_BLOCK y
@@ -225,6 +226,7 @@ do_configure:prepend() {
         kernel_conf_variable SQUASHFS y
         kernel_conf_variable SQUASHFS_FILE_DIRECT y
         kernel_conf_variable SQUASHFS_LZ4 y
+        kernel_conf_variable OVERLAY_FS y
     fi
 
     if [ "${KERNEL_ENABLE_AXP20X}" = "1" ]; then
