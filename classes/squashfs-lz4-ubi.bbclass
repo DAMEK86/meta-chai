@@ -85,6 +85,7 @@ multiubi_mkfs() {
 	echo vol_id=0 >> ${CFG_NAME}
 	echo vol_alignment=1 >> ${CFG_NAME}
 	echo vol_type=dynamic >> ${CFG_NAME}
+	echo vol_size=10MiB >> ${CFG_NAME}
 	echo vol_name=kernel >> ${CFG_NAME}
 
 	echo \[rootfs\] >> ${CFG_NAME}
@@ -93,6 +94,7 @@ multiubi_mkfs() {
 	echo vol_id=1 >> ${CFG_NAME}
 	echo vol_alignment=1 >> ${CFG_NAME}
 	echo vol_type=dynamic >> ${CFG_NAME}
+	echo vol_size=30MiB >> ${CFG_NAME}
 	echo vol_name=${UBI_VOLNAME} >> ${CFG_NAME}
 	# normally we shouldn't need to create the squashfs image ourselves,
 	# because we have a dependency declared (IMAGE_TYPEDEP)
@@ -110,7 +112,7 @@ multiubi_mkfs() {
 	echo vol_alignment=1 >> ${CFG_NAME}
 	echo vol_type=dynamic >> ${CFG_NAME}
 	echo vol_name=data >> ${CFG_NAME}
-	echo vol_size=2MiB >> ${CFG_NAME}
+	echo vol_size=30MiB >> ${CFG_NAME}
 	echo vol_flags=autoresize >> ${CFG_NAME}
 
 	rm -rf ${IMGDEPLOYDIR}/empty/*
