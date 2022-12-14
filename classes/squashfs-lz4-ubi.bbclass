@@ -19,13 +19,11 @@ IMAGE_CMD:squashfs-lz4-ubi () {
 #+--------------------------+
 #|    UBI                   |
 #| +----------------------+ |
-#| |   kernel (UBIFS)     | |
+#| |   fitImage (UBIFS)   | |
 #| +----------------------+ |
-#| |      dtb (UBIFS)     | |
+#| |     rootfs (UBIFS)   | |
 #| +----------------------+ |
-#| |   rootfs (UBIFS)     | |
-#| +----------------------+ |
-#| |     data (UBIFS)     | |
+#| |       data (UBIFS)   | |
 #| +----------------------+ |
 #+--------------------------+
 
@@ -89,18 +87,10 @@ multiubi_mkfs() {
 	echo vol_type=dynamic >> ${CFG_NAME}
 	echo vol_name=kernel >> ${CFG_NAME}
 
-	echo \[dtb\] >> ${CFG_NAME}
-	echo mode=ubi >> ${CFG_NAME}
-	echo image=${DEPLOY_DIR_IMAGE}/${KERNEL_DEVICETREE} >> ${CFG_NAME}
-	echo vol_id=1 >> ${CFG_NAME}
-	echo vol_alignment=1 >> ${CFG_NAME}
-	echo vol_type=dynamic >> ${CFG_NAME}
-	echo vol_name=dtb >> ${CFG_NAME}
-
 	echo \[rootfs\] >> ${CFG_NAME}
 	echo mode=ubi >> ${CFG_NAME}
-	echo image=${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.squashfs-lz4 >> ${CFG_NAME}
-	echo vol_id=2 >> ${CFG_NAME}
+	echo image=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.rootfs.ubifs >> ${CFG_NAME}
+	echo vol_id=1 >> ${CFG_NAME}
 	echo vol_alignment=1 >> ${CFG_NAME}
 	echo vol_type=dynamic >> ${CFG_NAME}
 	echo vol_name=${UBI_VOLNAME} >> ${CFG_NAME}
@@ -115,7 +105,8 @@ multiubi_mkfs() {
 
 	echo \[data\] >> ${CFG_NAME}
 	echo mode=ubi >> ${CFG_NAME}
-	echo vol_id=3 >> ${CFG_NAME}
+	echo image=${DEPLOY_DIR_IMAGE}/empty.ubifs >> ${CFG_NAME}
+	echo vol_id=2 >> ${CFG_NAME}
 	echo vol_alignment=1 >> ${CFG_NAME}
 	echo vol_type=dynamic >> ${CFG_NAME}
 	echo vol_name=data >> ${CFG_NAME}
@@ -128,6 +119,8 @@ multiubi_mkfs() {
 	bbwarn cat ${IMGDEPLOYDIR}/${CFG_NAME}
 
 	mkfs.ubifs -r ${IMGDEPLOYDIR}/empty -o ${DEPLOY_DIR_IMAGE}/empty.ubifs ${mkubifs_args}
+
+	mkfs.ubifs -r ${IMAGE_ROOTFS} -o ${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.rootfs.ubifs ${mkubifs_args}
 	ubinize -o ${IMGDEPLOYDIR}/${IMAGE_NAME}${vname}.rootfs.ubi ${ubinize_args} ${CFG_NAME}
 
 	# Cleanup cfg file
