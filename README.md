@@ -138,3 +138,39 @@ sudo ./sunxi-tools/sunxi-fel spiflash-write 0x0 u-boot-sunxi-with-spl.bin
 sf probe
 sf erase 0x0 0x1000000
 ```
+
+# using NAND instead of NOR Flash
+
+After some research, i found out that nand boot from spi isn't in u-boot.  
+However i found [Benedikt-Alexander Mokroß openwrt port](https://github.com/bamkrs/openwrt/tree/dolphinpi-spinand) to Allwinners V3s SoC, which was a huge burst for this part.
+
+__Steps to bringup SPI-NAND:__
+1) build SD-Card image and burn image to SD-Card.
+2) enable `BOOT_DEV = "nand"` and build image again.
+3) copy `<imagename>.ubi` to SD-Card
+4) (TODO until know) perare u-boot for NAND load by running u-boot-spi-nand.sh. e.g. `./u-boot-spi-nand.sh mtd0.bin u-boot-sunxi-with-spl.bin-licheepizero-dock 2048 128`
+5) copy `mtd0.bin` to SD-Card
+6) boot SD-Card
+
+__linux based__
+
+```sh
+# erase uboot nand section
+mtd_debug erase /dev/mtd0 0x0 0x100000
+# write nand
+FILE=$1
+mtd_debug write /dev/mtd0 0x0 $(ls -l ${FILE} | awk '{ print $5}') ${FILE}
+
+# write ubi to mtd1
+ubiformat /dev/mtd1 -f <ubi file>
+```
+
+__u-boot based__
+
+```sh
+# erase uboot nand section
+mtd erase uboot
+# write nand
+load mmc 0:1 ${loadaddr} <u-boot-sunxi-with-spl.bin (pepared for nand)>
+mtd write uboot ${loadaddr}
+```

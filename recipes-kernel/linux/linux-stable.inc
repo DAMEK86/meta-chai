@@ -213,15 +213,31 @@ do_configure:prepend() {
         kernel_conf_variable SCSI y
     fi
 
-    if [ "${KERNEL_ENABLE_MTD}" = "1" ]; then
-        kernel_conf_variable MTD y
+    spi_nand="${@bb.utils.contains("BOOT_DEV", "nand", "1", "0", d)}"
+    if [ "${spi_nand}" = "1" ]; then
+        kernel_conf_variable MTD_SPI_NAND=y
+        kernel_conf_variable MTD_NAND_CORE=y
+        kernel_conf_variable MTD_NAND_ECC=y
+    fi
+
+    spi_nor="${@bb.utils.contains("BOOT_DEV", "spinor", "1", "0", d)}"
+    if [ "${spi_nor}" = "1" ]; then
         kernel_conf_variable MTD_SPI_NOR y
         kernel_conf_variable MTD_SPI_NOR_USE_4K_SECTORS y
+    fi
+
+    if [ "${KERNEL_ENABLE_MTD}" = "1" ]; then
+        kernel_conf_variable MTD y
 
         kernel_conf_variable MTD_UBI y
-        kernel_conf_variable MTD_UBI_BLOCK y
+        kernel_conf_variable MTD_UBI_WL_THRESHOLD=128
+        kernel_conf_variable MTD_UBI_BEB_LIMIT=20
+        kernel_conf_variable MTD_UBI_FASTMAP=y
+        kernel_conf_variable MTD_UBI_BLOCK=n
+        kernel_conf_variable MTD_UBI_GLUEBI=n
         kernel_conf_variable UBIFS_FS y
         kernel_conf_variable UBIFS_FS_ADVANCED_COMPR y
+        kernel_conf_variable UBIFS_LZO=y
 
         kernel_conf_variable SQUASHFS y
         kernel_conf_variable SQUASHFS_FILE_DIRECT y

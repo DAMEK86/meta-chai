@@ -1,0 +1,47 @@
+From 29174eb05de4f6c3c6b3b74289bcc442b2767fe2 Mon Sep 17 00:00:00 2001
+From: Andreas Rehn <andreas.rehn@daimler.com>
+Date: Sun, 3 Apr 2022 17:32:30 +0200
+Subject: [PATCH] arm: dts: sun8i-v3s: enable spi0
+
+Signed-off-by: Andreas Rehn <rehn.andreas86@gmail.com>
+---
+ arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dts | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dts b/arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dts
+index 8455d9e2b19c..4868e6b3caf1 100644
+--- a/arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dts
++++ b/arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dts
+@@ -113,6 +113,32 @@ &mmc0 {
+ 	status = "okay";
+ };
+ 
++&spi0 {
++	status = "okay";
++	spi_nand: spi-nand@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "spi-nand";
++		reg = <0>;
++		spi-max-frequency = <100000000>;
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			partition@0 {
++				label = "u-boot";
++				reg = <0x000000 0x100000>;
++			};
++
++			partition@80000 {
++				label = "ubi";
++				reg = <0x100000 0x00000>;
++			};
++		};
++	};
++};
++
+ &uart0 {
+ 	pinctrl-0 = <&uart0_pb_pins>;
+ 	pinctrl-names = "default";

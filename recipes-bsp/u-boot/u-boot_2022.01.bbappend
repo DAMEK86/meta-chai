@@ -6,9 +6,15 @@ SRC_URI:append = " \
 "
 
 SRC_URI:append:licheepizero-dock = " \
-    file://003-add-zero-dock_defconfig.patch \
     file://004-add-zero-dock.dts.patch \
     file://005-enable-ethernet-at-zero-dock.patch \
-    file://006-add-nor-flash-at-zero.dts.patch \
-    file://007-config-add-LicheePi_Zero_Dock_nor.patch \
+    ${@bb.utils.contains('BOOT_DEV', 'spinor', '\
+        file://006-add-nor-flash-at-zero.dts.patch \
+        file://007-config-add-LicheePi_Zero_Dock_nor.patch \
+    ', '', d)} \
+    ${@bb.utils.contains('BOOT_DEV', 'nand', '\
+        file://008-licheepi-zero-add-spi-nand.patch \
+    ', '\
+        file://003-add-zero-dock_defconfig.patch \
+    ', d)} \
 "

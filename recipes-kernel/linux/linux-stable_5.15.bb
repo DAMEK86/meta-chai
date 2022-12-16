@@ -27,5 +27,10 @@ SRC_URI:append = " \
     file://0004-arm-dts-sunxi-v3s-add-LCD.patch \
     file://0005-ARM-dts-sun8i-v3s-Add-node-for-system-control.patch \
     file://0006-ARM-dts-sun8i-v3s-Add-video-engine-node.patch \
-    file://0007-arm-dts-sun8i-v3s-enable-spi0.patch \
+    ${@bb.utils.contains('BOOT_DEV', 'spinor', '\
+        file://0007-arm-dts-sun8i-v3s-enable-spi0.patch \
+    ', '', d)} \
+    ${@bb.utils.contains('BOOT_DEV', 'nand', '\
+        file://0008-arm-dts-sun8i-v3s-enable-spi0-nand.patch \
+    ', '', d)} \
 "
