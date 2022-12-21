@@ -851,7 +851,7 @@ new file mode 100644
 index 0000000000..a9c9b424be
 --- /dev/null
 +++ b/configs/LicheePi_Zero_nand_defconfig
-@@ -0,0 +1,41 @@
+@@ -0,0 +1,40 @@
 +CONFIG_ARM=y
 +CONFIG_ARCH_SUNXI=y
 +CONFIG_DEFAULT_DEVICE_TREE="sun8i-v3s-licheepi-zero-dock"
@@ -884,8 +884,7 @@ index 0000000000..a9c9b424be
 +
 +CONFIG_MTDIDS_DEFAULT="spi-nand0=0"
 +CONFIG_MTDPARTS_DEFAULT="mtdparts=0:1M(uboot),-(rootubi)"
-+CONFIG_BOOTCOMMAND="setenv bootargs console=ttyS0,115200 panic=5 rootwait ubi.mtd=1 root=ubi0:rootfs rootfstype=ubifs; ubi part rootubi; ubi read ${kernel_addr_r} kernel; ubi detach; bootm ${kernel_addr_r}"
-+CONFIG_BOOTARGS="console=ttyS0,115200 panic=5 rootwait rootfstype=ubifs ubi.mtd=1 ubi.block=0,rootfs root=/dev/ubiblock0_2;"
++CONFIG_BOOTCOMMAND="setenv bootargs console=ttyS0,115200 panic=5 rootwait ubi.mtd=1 root=ubi0:rootfs_a rootfstype=ubifs; ubi part rootubi; ubi read ${kernel_addr_r} kernel_a; ubi detach; bootm ${kernel_addr_r}"
 +
 +CONFIG_MTD_SPI_NAND=y
 +CONFIG_CMD_DM=y

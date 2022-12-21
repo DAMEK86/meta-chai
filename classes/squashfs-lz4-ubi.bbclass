@@ -19,9 +19,13 @@ IMAGE_CMD:squashfs-lz4-ubi () {
 #+--------------------------+
 #|    UBI                   |
 #| +----------------------+ |
-#| |   fitImage (UBIFS)   | |
+#| | fitImage A (UBIFS)   | |
 #| +----------------------+ |
-#| |     rootfs (UBIFS)   | |
+#| | fitImage B (UBIFS)   | |
+#| +----------------------+ |
+#| |   rootfs A (UBIFS)   | |
+#| +----------------------+ |
+#| |   rootfs B (UBIFS)   | |
 #| +----------------------+ |
 #| |       data (UBIFS)   | |
 #| +----------------------+ |
@@ -79,23 +83,41 @@ multiubi_mkfs() {
 	CFG_NAME=ubinize-${IMAGE_NAME}-ubi.cfg
 	echo -n > ${CFG_NAME}
 
-	echo \[kernel\] >> ${CFG_NAME}
+	echo \[kernel_a\] >> ${CFG_NAME}
 	echo mode=ubi >> ${CFG_NAME}
 	echo image=${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE} >> ${CFG_NAME}
 	echo vol_id=0 >> ${CFG_NAME}
 	echo vol_alignment=1 >> ${CFG_NAME}
 	echo vol_type=dynamic >> ${CFG_NAME}
 	echo vol_size=10MiB >> ${CFG_NAME}
-	echo vol_name=kernel >> ${CFG_NAME}
+	echo vol_name=kernel_a >> ${CFG_NAME}
 
-	echo \[rootfs\] >> ${CFG_NAME}
+	echo \[kernel_b\] >> ${CFG_NAME}
 	echo mode=ubi >> ${CFG_NAME}
-	echo image=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.rootfs.ubifs >> ${CFG_NAME}
+	echo image=${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE} >> ${CFG_NAME}
 	echo vol_id=1 >> ${CFG_NAME}
 	echo vol_alignment=1 >> ${CFG_NAME}
 	echo vol_type=dynamic >> ${CFG_NAME}
+	echo vol_size=10MiB >> ${CFG_NAME}
+	echo vol_name=kernel_b >> ${CFG_NAME}
+
+	echo \[rootfs_a\] >> ${CFG_NAME}
+	echo mode=ubi >> ${CFG_NAME}
+	echo image=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.rootfs.ubifs >> ${CFG_NAME}
+	echo vol_id=2 >> ${CFG_NAME}
+	echo vol_alignment=1 >> ${CFG_NAME}
+	echo vol_type=dynamic >> ${CFG_NAME}
 	echo vol_size=30MiB >> ${CFG_NAME}
-	echo vol_name=${UBI_VOLNAME} >> ${CFG_NAME}
+	echo vol_name=${UBI_VOLNAME}_a >> ${CFG_NAME}
+
+	echo \[rootfs_b\] >> ${CFG_NAME}
+	echo mode=ubi >> ${CFG_NAME}
+	echo image=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.rootfs.ubifs >> ${CFG_NAME}
+	echo vol_id=3 >> ${CFG_NAME}
+	echo vol_alignment=1 >> ${CFG_NAME}
+	echo vol_type=dynamic >> ${CFG_NAME}
+	echo vol_size=30MiB >> ${CFG_NAME}
+	echo vol_name=${UBI_VOLNAME}_b >> ${CFG_NAME}
 	# normally we shouldn't need to create the squashfs image ourselves,
 	# because we have a dependency declared (IMAGE_TYPEDEP)
 	# But, if this file is modified, the dependency is _not_ rebuild,
@@ -108,7 +130,7 @@ multiubi_mkfs() {
 	echo \[data\] >> ${CFG_NAME}
 	echo mode=ubi >> ${CFG_NAME}
 	echo image=${DEPLOY_DIR_IMAGE}/empty.ubifs >> ${CFG_NAME}
-	echo vol_id=2 >> ${CFG_NAME}
+	echo vol_id=4 >> ${CFG_NAME}
 	echo vol_alignment=1 >> ${CFG_NAME}
 	echo vol_type=dynamic >> ${CFG_NAME}
 	echo vol_name=data >> ${CFG_NAME}
