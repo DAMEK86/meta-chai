@@ -33,4 +33,5 @@ SRC_URI:append = " \
     ${@bb.utils.contains('BOOT_DEV', 'nand', '\
         file://0008-arm-dts-sun8i-v3s-enable-spi0-nand.patch \
     ', '', d)} \
+    file://0009-enable-uart2-sun8i-v3s-licheepi-zero-dock.dts.patch \
 "
