@@ -3,6 +3,7 @@ From: Andreas Rehn <rehn.andreas86@gmail.com>
 Date: Wed, 7 Apr 2021 10:56:41 +0200
 Subject: [PATCH] u-boot: add support for Lichee Pi Zero Dock
 
+Upstream-Status: Inappropriate [custom machine not upstreamed]
 ---
  configs/LicheePi_Zero_Dock_defconfig | 7 +++++++
  1 file changed, 7 insertions(+)

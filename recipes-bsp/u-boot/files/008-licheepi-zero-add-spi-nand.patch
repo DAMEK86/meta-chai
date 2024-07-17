@@ -1,20 +1,21 @@
-From 9efca9030d36598babce61412eb254c0e0b63594 Mon Sep 17 00:00:00 2001
+From d6fa113379dbd95780087c200146ce5c764ad262 Mon Sep 17 00:00:00 2001
 From: Andreas Rehn <rehn.andreas86@gmail.com>
-Date: Fri, 2 Dec 2022 23:15:47 +0100
+Date: Wed, 17 Jul 2024 21:58:51 +0200
 Subject: [PATCH] licheepi-zero: add spi-nand
 
+Upstream-Status: Inappropriate [custom machine not upstreamed]
 ---
  arch/arm/dts/sun8i-v3s-licheepi-zero.dts |  27 +
  arch/arm/mach-sunxi/Kconfig              |  44 +-
  arch/arm/mach-sunxi/Makefile             |   1 +
  arch/arm/mach-sunxi/spl_spinand_sunxi.c  | 713 +++++++++++++++++++++++
- configs/LicheePi_Zero_nand_defconfig     |  41 ++
- 5 files changed, 825 insertions(+), 1 deletion(-)
+ configs/LicheePi_Zero_nand_defconfig     |  40 ++
+ 5 files changed, 824 insertions(+), 1 deletion(-)
  create mode 100644 arch/arm/mach-sunxi/spl_spinand_sunxi.c
  create mode 100644 configs/LicheePi_Zero_nand_defconfig
 
 diff --git a/arch/arm/dts/sun8i-v3s-licheepi-zero.dts b/arch/arm/dts/sun8i-v3s-licheepi-zero.dts
-index 2e4587d26c..69ceda38bb 100644
+index 2e4587d26c..7b8fd31cad 100644
 --- a/arch/arm/dts/sun8i-v3s-licheepi-zero.dts
 +++ b/arch/arm/dts/sun8i-v3s-licheepi-zero.dts
 @@ -50,6 +50,7 @@
@@ -25,11 +26,10 @@ index 2e4587d26c..69ceda38bb 100644
  	};
  
  	chosen {
-@@ -99,3 +100,29 @@
- 	usb0_id_det-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>;
+@@ -84,6 +85,32 @@
  	status = "okay";
  };
-+
+ 
 +&spi0 {
 +	status = "okay";
 +	spi_nand: spi-nand@0 {
@@ -55,16 +55,20 @@ index 2e4587d26c..69ceda38bb 100644
 +		};
 +	};
 +};
++
+ &uart0 {
+ 	pinctrl-0 = <&uart0_pb_pins>;
+ 	pinctrl-names = "default";
 diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
-index 2c18cf02d1..f6fa9ca7a1 100644
+index a4a8d8e944..cdff370558 100644
 --- a/arch/arm/mach-sunxi/Kconfig
 +++ b/arch/arm/mach-sunxi/Kconfig
-@@ -1016,12 +1016,54 @@ config SPL_STACK_R_ADDR
+@@ -1061,12 +1061,54 @@ config SPL_STACK_R_ADDR
  
  config SPL_SPI_SUNXI
  	bool "Support for SPI Flash on Allwinner SoCs in SPL"
--	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_R40 || MACH_SUN50I_H6
-+	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_R40 || MACH_SUN50I_H6 || MACH_SUN8I_V3S
+-	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_R40 || SUN50I_GEN_H6 || MACH_SUNIV
++	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_R40 || MACH_SUN8I_V3S || SUN50I_GEN_H6 || MACH_SUNIV
  	help
  	  Enable support for SPI Flash. This option allows SPL to read from
  	  sunxi SPI Flash. It uses the same method as the boot ROM, so does
@@ -116,10 +120,10 @@ index 2c18cf02d1..f6fa9ca7a1 100644
  	bool "Enable Pine64 device tree selection code"
  	depends on MACH_SUN50I
 diff --git a/arch/arm/mach-sunxi/Makefile b/arch/arm/mach-sunxi/Makefile
-index 5d3fd70f74..7f8cfb7847 100644
+index 1d4c70ec35..ccd00a34b3 100644
 --- a/arch/arm/mach-sunxi/Makefile
 +++ b/arch/arm/mach-sunxi/Makefile
-@@ -34,6 +34,7 @@ obj-$(CONFIG_DRAM_SUN8I_A33)	+= dram_sun8i_a33.o
+@@ -39,6 +39,7 @@ obj-$(CONFIG_DRAM_SUN8I_A33)	+= dram_sun8i_a33.o
  obj-$(CONFIG_DRAM_SUN8I_A83T)	+= dram_sun8i_a83t.o
  obj-$(CONFIG_DRAM_SUN9I)	+= dram_sun9i.o
  obj-$(CONFIG_SPL_SPI_SUNXI)	+= spl_spi_sunxi.o
@@ -129,7 +133,7 @@ index 5d3fd70f74..7f8cfb7847 100644
  obj-$(CONFIG_DRAM_SUN50I_H6)	+= dram_sun50i_h6.o
 diff --git a/arch/arm/mach-sunxi/spl_spinand_sunxi.c b/arch/arm/mach-sunxi/spl_spinand_sunxi.c
 new file mode 100644
-index 0000000000..f1b5144a69
+index 0000000000..3a0b695555
 --- /dev/null
 +++ b/arch/arm/mach-sunxi/spl_spinand_sunxi.c
 @@ -0,0 +1,713 @@
@@ -846,9 +850,10 @@ index 0000000000..f1b5144a69
 +}
 +/* Use priorty 0 to override the default if it happens to be linked in */
 +SPL_LOAD_IMAGE_METHOD("sunxi SPI-NAND", 0, BOOT_DEVICE_SPI, spl_spi_load_image);
+\ No newline at end of file
 diff --git a/configs/LicheePi_Zero_nand_defconfig b/configs/LicheePi_Zero_nand_defconfig
 new file mode 100644
-index 0000000000..a9c9b424be
+index 0000000000..70c16eeccb
 --- /dev/null
 +++ b/configs/LicheePi_Zero_nand_defconfig
 @@ -0,0 +1,40 @@
@@ -892,7 +897,3 @@ index 0000000000..a9c9b424be
 +CONFIG_SYS_SPI_U_BOOT_OFFS=0x8000
 +CONFIG_SPL_SPINAND_SUNXI=y
 +CONFIG_SPL_SPINAND_SUNXI_SPL_USE_GENERIC2K_ON_UNKNOWN=y
-\ No newline at end of file
--- 
-2.34.1
-

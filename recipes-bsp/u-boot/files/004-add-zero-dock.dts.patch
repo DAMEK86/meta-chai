@@ -1,23 +1,24 @@
-From 296884887eb9eaa933b84676a60be1b5a9395ef3 Mon Sep 17 00:00:00 2001
+From fd937b064aec587fa2860e8ad15c3a573fb2a366 Mon Sep 17 00:00:00 2001
 From: Andreas Rehn <rehn.andreas86@gmail.com>
-Date: Wed, 7 Apr 2021 10:56:41 +0200
+Date: Wed, 17 Jul 2024 21:49:52 +0200
 Subject: [PATCH] u-boot: add support for Lichee Pi Zero Dock
 
+Upstream-Status: Inappropriate [custom machine not upstreamed]
 ---
  arch/arm/dts/Makefile | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index b3e2a9c9d7..b0130c1b21 100644
+index 9d28a485be..2a886f5cd9 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -639,7 +639,8 @@ dtb-$(CONFIG_MACH_SUN8I_R40) += \
- 	sun8i-v40-bananapi-m2-berry.dtb
- dtb-$(CONFIG_MACH_SUN8I_V3S) += \
+@@ -808,7 +808,8 @@ dtb-$(CONFIG_MACH_SUN8I_V3S) += \
+ 	sun8i-s3-elimo-initium.dtb \
  	sun8i-s3-pinecube.dtb \
+ 	sun8i-v3-sl631-imx179.dtb \
 -	sun8i-v3s-licheepi-zero.dtb
 +	sun8i-v3s-licheepi-zero.dtb \
 +	sun8i-v3s-licheepi-zero-dock.dtb
+ dtb-$(CONFIG_MACH_SUN8I_R528) += \
+ 	sun8i-t113s-mangopi-mq-r-t113.dtb
  dtb-$(CONFIG_MACH_SUN50I_H5) += \
- 	sun50i-h5-bananapi-m2-plus.dtb \
- 	sun50i-h5-emlid-neutis-n5-devboard.dtb \
